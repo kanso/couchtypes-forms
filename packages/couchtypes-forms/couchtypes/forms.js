@@ -8,8 +8,8 @@
  * Module dependencies
  */
 
-var utils = require('duality/utils'),
-    fieldset = require('kanso/fieldset'),
+var utils = require('couchtypes/utils'),
+    fieldset = require('couchtypes/fieldset'),
     render = require('./render'),
     _ = require('underscore')._;
 
@@ -231,11 +231,7 @@ exports.overrideAttachments = function (excludes, field_subset, fields, doc_a, d
  * @api public
  */
 
-Form.prototype.validate = function (/*optional*/req) {
-    if (!req) {
-        req = utils.currentRequest();
-    }
-
+Form.prototype.validate = function (req) {
     /* This is the request payload:
         This contains all of the form fields that are used by
         formValuesToTree and parseRaw, and must be copied first. */
@@ -253,7 +249,7 @@ Form.prototype.validate = function (/*optional*/req) {
         exports.parseRaw(this.fields, tree),
         []
     );
-    
+
     this.errors = fieldset.validate(
         this.fields, this.values, this.values, this.raw, [], false
     );
@@ -282,7 +278,7 @@ Form.prototype.validate = function (/*optional*/req) {
                     ' `Type`; check lib/types.js for proper instansiation'
             );
         }
-        
+
     }
     else {
         this.errors = this.errors.concat(fieldset.authFieldSet(
@@ -394,7 +390,7 @@ var errsWithoutFields = function (errs) {
  * Converts current form to a HTML string, using an optional renderer class.
  *
  * @name Form.toHTML(req, [RendererClass])
- * @param {Object} req Kanso request object; null for most recent. (optional)
+ * @param {Object} req Request object; null for most recent. (optional)
  * @param {Renderer} RendererClass (optional)
  * @param {Object} options An object containing widget options, which
  *          will ultimately be provided to each widget's toHTML method.
@@ -408,13 +404,10 @@ var errsWithoutFields = function (errs) {
  * @api public
  */
 
-Form.prototype.toHTML = function (/* optional */ req,
+Form.prototype.toHTML = function (req,
                                   /* optional */ RendererClass,
                                   /* optional */ options,
                                   /* optional */ create_defaults) {
-    if (!req) {
-        req = utils.currentRequest();
-    }
     var values = this.values;
 
     options = options || {};

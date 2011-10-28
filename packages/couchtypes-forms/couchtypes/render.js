@@ -32,7 +32,7 @@ exports.scriptTagForEvent = function (name) {
         '<script type="text/javascript">' +
         "// <![CDATA[\n" +
             "if (typeof require !== 'undefined') {\n" +
-            "  require('kanso/render').emit('" +
+            "  require('couchtypes/render').emit('" +
                 sanitize.cdata(sanitize.js(name)) +
             "');\n" +
             "}" +
